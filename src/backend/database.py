@@ -138,7 +138,7 @@ initial_activities = {
         "participants": ["charlotte@mergington.edu", "amelia@mergington.edu"]
     },
     "Manga Club": {
-        "description": "Explore the fantastic stories of the most interesting characters from Japanese Manga (graphic novels).",
+        "description": "日本のマンガ（グラフィックノベル）に登場する、最も魅力的なキャラクターたちの幻想的な物語を探検しよう。",
         "schedule": "Tuesdays, 7:00 PM - 8:00 PM",
         "schedule_details": {
             "days": ["Tuesday"],
