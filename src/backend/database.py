@@ -18,17 +18,23 @@ def hash_password(password):
     return ph.hash(password)
 
 def init_database():
-    """Initialize database if empty"""
+    """Initialize database with seeded data."""
 
-    # Initialize activities if empty
-    if activities_collection.count_documents({}) == 0:
-        for name, details in initial_activities.items():
-            activities_collection.insert_one({"_id": name, **details})
-            
-    # Initialize teacher accounts if empty
-    if teachers_collection.count_documents({}) == 0:
-        for teacher in initial_teachers:
-            teachers_collection.insert_one({"_id": teacher["username"], **teacher})
+    # Ensure all seeded activities exist in the database
+    for name, details in initial_activities.items():
+        activities_collection.update_one(
+            {"_id": name},
+            {"$setOnInsert": details},
+            upsert=True,
+        )
+
+    # Ensure teacher accounts exist in the database
+    for teacher in initial_teachers:
+        teachers_collection.update_one(
+            {"_id": teacher["username"]},
+            {"$setOnInsert": teacher},
+            upsert=True,
+        )
 
 # Initial database if empty
 initial_activities = {
@@ -130,6 +136,17 @@ initial_activities = {
         },
         "max_participants": 12,
         "participants": ["charlotte@mergington.edu", "amelia@mergington.edu"]
+    },
+    "Manga Club": {
+        "description": "日本のマンガ（グラフィックノベル）に登場する、最も魅力的なキャラクターたちの幻想的な物語を探検しよう。",
+        "schedule": "Tuesdays, 5:00 PM - 6:00 PM",
+        "schedule_details": {
+            "days": ["Tuesday"],
+            "start_time": "17:00",
+            "end_time": "18:00"
+        },
+        "max_participants": 25,
+        "participants": []
     },
     "Weekend Robotics Workshop": {
         "description": "Build and program robots in our state-of-the-art workshop",
